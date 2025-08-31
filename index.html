@@ -338,7 +338,7 @@
         .recent-orders {
             background-color: white;
             border-radius: var(--border-radius);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px extreme15px rgba(0, 0, 0, 0.05);
             padding: 20px;
             margin-bottom: 30px;
         }
@@ -387,7 +387,7 @@
 
         .status.canceled {
             background-color: rgba(249, 65, 68, 0.2);
-            color: var(--danger);
+            color: extreme--danger);
         }
 
         .action-buttons {
@@ -428,7 +428,7 @@
         }
 
         .form-group label {
-            display: block;
+            extreme display: block;
             margin-bottom: 8px;
             font-weight: 500;
         }
@@ -531,7 +531,7 @@
 
         .modal-footer {
             padding: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px extreme solid #eee;
             text-align: right;
         }
 
@@ -545,6 +545,14 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
+        }
+
+        .report-result {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
         }
 
         /* Páginas */
@@ -650,17 +658,17 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234361ee'/><text x='50' y='60' font-size='50' text-anchor='middle' fill='white'>D</text></svg>" alt="Logo">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' extreme cy='50' r='45' fill='%234361ee'/><text x='50' y='60' font-size='50' text-anchor='middle' fill='white'>D</text></svg>" alt="Logo">
             <h2>DashBoard</h2>
         </div>
         <ul class="sidebar-menu">
             <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="#" data-page="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            <li><a href="#" data-page="orders"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-            <li><a href="#" data-page="customers"><i class="fas fa-users"></i> Customers</a></li>
-            <li><a href="#" data-page="products"><i class="fas fa-box"></i> Products</a></li>
-            <li><a href="#" data-page="reports"><i class="fas fa-file-alt"></i> Reports</a></li>
-            <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#" data-page="orders"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+            <li><a href="#" data-page="customers"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#" data-page="products"><i class="fas fa-box"></i> Produtos</a></li>
+            <li><a href="#" data-page="reports"><i class="fas fa-file-alt"></i> Relatórios</a></li>
+            <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Configurações</a></li>
         </ul>
     </aside>
 
@@ -669,7 +677,7 @@
         <!-- Header -->
         <header>
             <div class="menu-toggle">
-                <i class="fas fa-bars"></i>
+                <i class="fas extreme fa-bars"></i>
             </div>
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -732,13 +740,13 @@
                         <div class="stat-icon bg-warning">
                             <i class="fas fa-users"></i>
                         </div>
-                        <div class="stat-info">
+                        extreme <div class="stat-info">
                             <h3 id="totalCustomers">2.458</h3>
                             <p>Clientes</p>
                         </div>
                     </div>
                     <div class="card stat-card">
-                        <div class="stat-icon bg-danger">
+                        <div class="stat-icon extreme bg-danger">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="stat-info">
@@ -792,27 +800,88 @@
                 </div>
             </div>
 
-            <!-- Outras páginas (inicialmente ocultas) -->
+            <!-- Analytics Page -->
             <div class="page" id="analytics-page">
                 <div class="page-title">
                     <h1>Analytics</h1>
                 </div>
                 <div class="card">
-                    <h2>Página de Analytics</h2>
-                    <p>Esta página contém análises detalhadas e métricas avançadas.</p>
+                    <h2>Análises Detalhadas</h2>
+                    <p>Visualize métricas avançadas e tendências do seu negócio.</p>
+                    <div class="charts">
+                        <div class="chart-container">
+                            <div class="chart-title">
+                                <h3>Desempenho por Categoria</h3>
+                            </div>
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-title">
+                                <h3>Evolução de Clientes</h3>
+                            </div>
+                            <canvas id="customerGrowthChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Orders Page -->
             <div class="page" id="orders-page">
                 <div class="page-title">
-                    <h1>Orders</h1>
+                    <h1>Gestão de Pedidos</h1>
+                    <button class="btn" id="addOrderPageBtn">Novo Pedido</button>
                 </div>
                 <div class="card">
-                    <h2>Gerenciamento de Pedidos</h2>
-                    <p>Esta página permite gerenciar todos os pedidos do sistema.</p>
+                    <h2>Todos os Pedidos</h2>
+                    <div class="table-responsive">
+                        <table id="allOrdersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
+            <!-- Customers Page -->
+            <div class="page" id="customers-page">
+                <div class="page-title">
+                    <h1>Gestão de Clientes</h1>
+                    <button class="btn" id="addCustomerBtn">Novo Cliente</button>
+                </div>
+                <div class="card">
+                    <h2>Lista de Clientes</h2>
+                    <div class="table-responsive">
+                        <table id="customersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Telefone</th>
+                                    <th>Total de Pedidos</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
             <div class="page" id="reports-page">
                 <div class="page-title">
                     <h1>Relatórios</h1>
@@ -824,6 +893,7 @@
                             <option value="sales">Relatório de Vendas</option>
                             <option value="financial">Relatório Financeiro</option>
                             <option value="customers">Relatório de Clientes</option>
+                            <option value="products">Relatório de Produtos</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -839,12 +909,15 @@
                         <button class="btn" id="generateReportPageBtn">Gerar Relatório</button>
                     </div>
                 </div>
-                <div class="card">
-                    <h2>Relatórios Personalizados</h2>
-                    <p>Gere relatórios detalhados com base nos filtros selecionados.</p>
+                <div class="report-result">
+                    <h2>Resultado do Relatório</h2>
+                    <div id="reportContent">
+                        <p>Selecione os filtros e clique em "Gerar Relatório" para visualizar os dados.</p>
+                    </div>
                 </div>
             </div>
 
+            <!-- Profile Page -->
             <div class="page" id="profile-page">
                 <div class="page-title">
                     <h1>Meu Perfil</h1>
@@ -872,11 +945,51 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Settings Page -->
+            <div class="page" id="settings-page">
+                <div class="page-title">
+                    <h1>Configurações</h1>
+                </div>
+                <div class="card">
+                    <h2>Preferências do Sistema</h2>
+                    <form id="settingsForm">
+                        <div class="form-group">
+                            <label for="settingsLanguage">Idioma</label>
+                            <select class="form-control" id="settingsLanguage">
+                                <option value="pt">Português</option>
+                                <option value="en">Inglês</option>
+                                <option value="es">Espanhol</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="settingsCurrency">Moeda</label>
+                            <select class="form-control" extreme id="settingsCurrency">
+                                <option value="BRL">Real Brasileiro (R$)</option>
+                                <option value="USD">Dólar Americano ($)</option>
+                                <option value="EUR">Euro (€)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="settingsNotifications">Notificações</label>
+                            <div>
+                                <input type="checkbox" id="settingsEmailNotifications" checked>
+                                <label for="settingsEmailNotifications">Notificações por Email</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="settingsPushNotifications" checked>
+                                <label for="settingsPushNotifications">Notificações Push</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Salvar Configurações</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
         <footer>
-            <div class="footer-content">
+            <div class extreme .footer-content">
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -892,14 +1005,23 @@
     <div class="modal" id="orderModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Adicionar Novo Pedido</h3>
+                <h3 id="orderModalTitle">Adicionar Novo Pedido</h3>
                 <button class="modal-close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="orderForm">
+                    <input type="hidden" id="editOrderId" value="">
                     <div class="form-group">
                         <label for="orderCustomer">Cliente</label>
-                        <input type="text" class="form-control" id="orderCustomer" placeholder="Nome do cliente" required>
+                        <select class="form-control" id="orderCustomer" required>
+                            <option value="">Selecione um cliente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderProduct">Produto</label>
+                        <select class="form-control" id="orderProduct" required>
+                            <option value="">Selecione um produto</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="orderDate">Data</label>
@@ -926,6 +1048,37 @@
         </div>
     </div>
 
+    <!-- Modal para adicionar cliente -->
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="customerModalTitle">Adicionar Novo Cliente</h3>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="customerForm">
+                    <input type="hidden" id="editCustomerId" value="">
+                    <div class="form-group">
+                        <label for="customerName">Nome</label>
+                        <input type="text" class="form-control" id="customerName" placeholder="Nome do cliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email</label>
+                        <input type="email" class="form-control" id="customerEmail" placeholder="Email do cliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Telefone</label>
+                        <input type="tel" class="form-control" id="customerPhone" placeholder="Telefone do cliente">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" data-dismiss="modal">Cancelar</button>
+                <button class="btn" id="saveCustomerBtn">Salvar Cliente</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Dados iniciais da aplicação
         const appData = {
@@ -933,14 +1086,31 @@
                 name: "João Silva",
                 email: "joao.silva@email.com",
                 avatar: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='40' r='30' fill='%236c757d'/><circle cx='50' cy='100' r='40' fill='%236c757d'/></svg>",
-                bio: "Gerente de Vendas"
+                bio: "Gerente de Vendas",
+                language: "pt",
+                currency: "BRL",
+                emailNotifications: true,
+                pushNotifications: true
             },
+            customers: [
+                { id: 1, name: "Maria Santos", email: "maria@email.com", phone: "(11) 99999-9999", orders: 5 },
+                { id: 2, name: "Pedro Alves", email: "pedro@email.com", phone: "(11) 98888-8888", orders: 3 },
+                { id: 3, name: "Ana Costa", email: "ana@email.com", phone: "(11) 97777-7777", orders: 7 },
+                { id: 4, name: "Carlos Mendes", email: "carlos@email.com", phone: "(11) 96666-6666", orders: 2 }
+            ],
+            products: [
+                { id: 1, name: "Notebook Dell", price: 2999.99, category: "Eletrônicos" },
+                { id: 2, name: "Smartphone Samsung", price: 1299.99, category: "Eletrônicos" },
+                { id: 3, name: "Camisa Social", price: 199.99, category: "Roupas" },
+                { id: 4, name: "Tênis Esportivo", price: 299.99, category: "Esportes" },
+                { id: 5, name: "Sofá 3 Lugares", price: 1999.99, category: "Casa" }
+            ],
             orders: [
-                { id: "ORD-001", customer: "Maria Santos", date: "2023-07-12", value: 350.00, status: "completed" },
-                { id: "ORD-002", customer: "João Silva", date: "2023-07-11", value: 1250.00, status: "pending" },
-                { id: "ORD-003", customer: "Ana Costa", date: "2023-07-10", value: 499.90, status: "completed" },
-                { id: "ORD-004", customer: "Pedro Alves", date: "2023-07-09", value: 2399.00, status: "canceled" },
-                { id: "ORD-005", customer: "Carla Mendes", date: "2023-07-08", value: 189.90, status: "completed" }
+                { id: "ORD-001", customerId: 1, productId: 1, date: "2023-07-12", value: 2999.99, status: "completed" },
+                { id: "ORD-002", customerId: 2, productId: 2, date: "2023-07-11", value: 1299.99, status: "pending" },
+                { id: "ORD-003", customerId: 3, productId: 3, date: "2023-07-10", value: 199.99, status: "completed" },
+                { id: "ORD-004", customerId: 4, productId: 4, date: "2023-07-09", value: 299.99, status: "canceled" },
+                { id: "ORD-005", customerId: 1, productId: 5, date: "2023-07-08", value: 1999.99, status: "completed" }
             ],
             monthlySales: [15000, 18000, 21000, 19000, 23000, 25000, 27000, 29000, 26000, 24000, 22000, 24580],
             salesDistribution: [35, 25, 20, 20],
@@ -952,7 +1122,9 @@
             // Carregar dados do usuário
             loadUserData();
             
-            // Carregar pedidos
+            // Carregar dados iniciais
+            loadCustomers();
+            loadProducts();
             loadOrders();
             
             // Inicializar gráficos
@@ -960,6 +1132,9 @@
             
             // Configurar event listeners
             setupEventListeners();
+            
+            // Configurar data atual como padrão para formulários
+            document.getElementById('orderDate').valueAsDate = new Date();
         });
 
         // Carregar dados do usuário
@@ -970,15 +1145,82 @@
             document.getElementById('profileEmail').value = appData.user.email;
             document.getElementById('profileAvatar').value = appData.user.avatar;
             document.getElementById('profileBio').value = appData.user.bio;
+            
+            // Configurações
+            document.getElementById('settingsLanguage').value = appData.user.language;
+            document.getElementById('settingsCurrency').value = appData.user.currency;
+            document.getElementById('settingsEmailNotifications').checked = appData.user.emailNotifications;
+            document.getElementById('settingsPushNotifications').checked = appData.user.pushNotifications;
+        }
+
+        // Carregar clientes nos selects
+        function loadCustomers() {
+            const customerSelect = document.getElementById('orderCustomer');
+            customerSelect.innerHTML = '<option value="">Selecione um cliente</option>';
+            
+            appData.customers.forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = customer.name;
+                customerSelect.appendChild(option);
+            });
+            
+            // Carregar tabela de clientes
+            const tbody = document.querySelector('#customersTable tbody');
+            tbody.innerHTML = '';
+            
+            appData.customers.forEach(customer => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.orders}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" data-id="${customer.id}">Editar</button>
+                        <button class="action-btn delete-btn" data-id="${customer.id}">Excluir</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Carregar produtos nos selects
+        function loadProducts() {
+            const productSelect = document.getElementById('orderProduct');
+            productSelect.innerHTML = '<option value="">Selecione um produto</option>';
+            
+            appData.products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = `${product.name} - R$ ${product.price.toFixed(2)}`;
+                productSelect.appendChild(option);
+            });
+            
+            // Event listener para atualizar o valor quando um produto for selecionado
+            productSelect.addEventListener('change', function() {
+                const productId = parseInt(this.value);
+                if (productId) {
+                    const product = appData.products.find(p => p.id === productId);
+                    document.getElementById('orderValue').value = product.price.toFixed(2);
+                }
+            });
         }
 
         // Carregar pedidos na tabela
         function loadOrders() {
             const tbody = document.querySelector('#ordersTable tbody');
+            const allTbody = document.querySelector('#allOrdersTable tbody');
             tbody.innerHTML = '';
+            allTbody.innerHTML = '';
             
-            appData.orders.forEach(order => {
-                const tr = document.createElement('tr');
+            // Ordenar pedidos por data (mais recentes primeiro)
+            const sortedOrders = [...appData.orders].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedOrders.forEach(order => {
+                const customer = appData.customers.find(c => c.id === order.customerId);
+                const product = appData.products.find(p => p.id === order.productId);
                 
                 // Formatar data
                 const dateObj = new Date(order.date);
@@ -987,9 +1229,10 @@
                 // Formatar valor
                 const formattedValue = `R$ ${order.value.toFixed(2).replace('.', ',')}`;
                 
+                const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${order.id}</td>
-                    <td>${order.customer}</td>
+                    <td>${customer ? customer.name : 'Cliente não encontrado'}</td>
                     <td>${formattedDate}</td>
                     <td>${formattedValue}</td>
                     <td><span class="status ${order.status}">${getStatusText(order.status)}</span></td>
@@ -999,7 +1242,13 @@
                     </td>
                 `;
                 
-                tbody.appendChild(tr);
+                // Adicionar apenas os 5 pedidos mais recentes na dashboard
+                if (tbody.childElementCount < 5) {
+                    tbody.appendChild(tr.cloneNode(true));
+                }
+                
+                // Adicionar todos os pedidos na página de pedidos
+                allTbody.appendChild(tr);
             });
             
             // Atualizar estatísticas
@@ -1024,17 +1273,23 @@
             }, 0);
             
             const totalOrders = appData.orders.length;
+            const totalCustomers = appData.customers.length;
+            
+            // Calcular crescimento (simulado)
+            const growthRate = 35;
             
             // Atualizar UI
             document.getElementById('totalRevenue').textContent = `R$ ${totalRevenue.toFixed(2).replace('.', ',')}`;
             document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalCustomers').textContent = totalCustomers;
+            document.getElementById('growthRate').textContent = `+${growthRate}%`;
         }
 
         // Inicializar gráficos
         function initCharts() {
             // Sales Chart
             const salesCtx = document.getElementById('salesChart').getContext('2d');
-            const salesChart = new Chart(salesCtx, {
+            window.salesChart = new Chart(salesCtx, {
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
@@ -1073,7 +1328,7 @@
 
             // Doughnut Chart
             const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
-            const doughnutChart = new Chart(doughnutCtx, {
+            window.doughnutChart = new Chart(doughnutCtx, {
                 type: 'doughnut',
                 data: {
                     labels: appData.salesCategories,
@@ -1094,6 +1349,60 @@
                     plugins: {
                         legend: {
                             position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Category Chart (Analytics)
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            window.categoryChart = new Chart(categoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: appData.salesCategories,
+                    datasets: [{
+                        label: 'Vendas por Categoria (R$)',
+                        data: [12500, 8500, 6500, 4500],
+                        backgroundColor: [
+                            '#4361ee',
+                            '#4cc9f0',
+                            '#f9c74f',
+                            '#f94144'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Customer Growth Chart (Analytics)
+            const customerCtx = document.getElementById('customerGrowthChart').getContext('2d');
+            window.customerChart = new Chart(customerCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Novos Clientes',
+                        data: [45, 52, 38, 65, 72, 88],
+                        backgroundColor: 'rgba(76, 201, 240, 0.1)',
+                        borderColor: '#4cc9f0',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     }
                 }
@@ -1131,77 +1440,194 @@
 
             // Botão de adicionar pedido
             document.getElementById('addOrderBtn').addEventListener('click', function() {
+                document.getElementById('orderModalTitle').textContent = 'Adicionar Novo Pedido';
+                document.getElementById('editOrderId').value = '';
+                document.getElementById('orderForm').reset();
+                document.getElementById('orderDate').valueAsDate = new Date();
                 document.getElementById('orderModal').classList.add('show');
             });
 
-            // Fechar modal
+            // Botão de adicionar pedido da página de pedidos
+            document.getElementById('addOrderPageBtn').addEventListener('click', function() {
+                document.getElementById('orderModalTitle').textContent = 'Adicionar Novo Pedido';
+                document.getElementById('editOrderId').value = '';
+                document.getElementById('orderForm').reset();
+                document.getElementById('orderDate').valueAsDate = new Date();
+                document.getElementById('orderModal').classList.add('show');
+            });
+
+            // Botão de adicionar cliente
+            document.getElementById('addCustomerBtn').addEventListener('click', function() {
+                document.getElementById('customerModalTitle').textContent = 'Adicionar Novo Cliente';
+                document.getElementById('editCustomerId').value = '';
+                document.getElementById('customerForm').reset();
+                document.getElementById('customerModal').classList.add('show');
+            });
+
+            // Fechar modais
             document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.getElementById('orderModal').classList.remove('show');
+                    document.getElementById('customerModal').classList.remove('show');
                 });
             });
 
             // Salvar pedido
             document.getElementById('saveOrderBtn').addEventListener('click', function() {
-                const customer = document.getElementById('orderCustomer').value;
+                const customerId = parseInt(document.getElementById('orderCustomer').value);
+                const productId = parseInt(document.getElementById('orderProduct').value);
                 const date = document.getElementById('orderDate').value;
                 const value = parseFloat(document.getElementById('orderValue').value);
                 const status = document.getElementById('orderStatus').value;
+                const editOrderId = document.getElementById('editOrderId').value;
                 
-                if (customer && date && value && status) {
-                    // Gerar ID único
-                    const newId = `ORD-${(appData.orders.length + 1).toString().padStart(3, '0')}`;
+                if (customerId && productId && date && !isNaN(value) && status) {
+                    if (editOrderId) {
+                        // Editar pedido existente
+                        const orderIndex = appData.orders.findIndex(o => o.id === editOrderId);
+                        if (orderIndex !== -1) {
+                            appData.orders[orderIndex] = {
+                                ...appData.orders[orderIndex],
+                                customerId,
+                                productId,
+                                date,
+                                value,
+                                status
+                            };
+                        }
+                    } else {
+                        // Criar novo pedido
+                        const newOrder = {
+                            id: `ORD-${(appData.orders.length + 1).toString().padStart(3, '0')}`,
+                            customerId,
+                            productId,
+                            date,
+                            value,
+                            status
+                        };
+                        appData.orders.unshift(newOrder);
+                    }
                     
-                    // Adicionar pedido
-                    appData.orders.unshift({
-                        id: newId,
-                        customer: customer,
-                        date: date,
-                        value: value,
-                        status: status
-                    });
-                    
-                    // Recarregar tabela
+                    // Recarregar a tabela
                     loadOrders();
                     
                     // Fechar modal
                     document.getElementById('orderModal').classList.remove('show');
                     
-                    // Limpar formulário
+                    // Resetar formulário
                     document.getElementById('orderForm').reset();
                 } else {
-                    alert('Por favor, preencha todos os campos.');
+                    alert('Preencha todos os campos corretamente.');
                 }
             });
 
-            // Gerar relatório
-            document.getElementById('generateReportBtn').addEventListener('click', function() {
-                alert('Relatório gerado com sucesso! Em uma implementação real, isso baixaria um PDF.');
+            // Salvar cliente
+            document.getElementById('saveCustomerBtn').addEventListener('click', function() {
+                const name = document.getElementById('customerName').value;
+                const email = document.getElementById('customerEmail').value;
+                const phone = document.getElementById('customerPhone').value;
+                const editCustomerId = document.getElementById('editCustomerId').value;
+                
+                if (name && email) {
+                    if (editCustomerId) {
+                        // Editar cliente existente
+                        const customerIndex = appData.customers.findIndex(c => c.id === parseInt(editCustomerId));
+                        if (customerIndex !== -1) {
+                            appData.customers[customerIndex] = {
+                                ...appData.customers[customerIndex],
+                                name,
+                                email,
+                                phone
+                            };
+                        }
+                    } else {
+                        // Criar novo cliente
+                        const newCustomer = {
+                            id: appData.customers.length > 0 ? Math.max(...appData.customers.map(c => c.id)) + 1 : 1,
+                            name,
+                            email,
+                            phone,
+                            orders: 0
+                        };
+                        appData.customers.push(newCustomer);
+                    }
+                    
+                    // Recarregar a tabela e selects
+                    loadCustomers();
+                    
+                    // Fechar modal
+                    document.getElementById('customerModal').classList.remove('show');
+                    
+                    // Resetar formulário
+                    document.getElementById('customerForm').reset();
+                } else {
+                    alert('Preencha todos os campos obrigatórios.');
+                }
             });
 
-            document.getElementById('generateReportPageBtn').addEventListener('click', function() {
-                const reportType = document.getElementById('reportType').value;
-                const startDate = document.getElementById('startDate').value;
-                const endDate = document.getElementById('endDate').value;
-                
-                alert(`Relatório do tipo "${reportType}" gerado para o período ${startDate} à ${endDate}`);
+            // Editar ou excluir pedidos
+            document.querySelector('#ordersTable tbody').addEventListener('click', handleTableActions);
+            document.querySelector('#allOrdersTable tbody').addEventListener('click', handleTableActions);
+            
+            // Editar ou excluir clientes
+            document.querySelector('#customersTable tbody').addEventListener('click', function(e) {
+                if (e.target.classList.contains('edit-btn')) {
+                    const customerId = e.target.dataset.id;
+                    const customer = appData.customers.find(c => c.id === parseInt(customerId));
+                    if (customer) {
+                        document.getElementById('customerModalTitle').textContent = 'Editar Cliente';
+                        document.getElementById('editCustomerId').value = customer.id;
+                        document.getElementById('customerName').value = customer.name;
+                        document.getElementById('customerEmail').value = customer.email;
+                        document.getElementById('customerPhone').value = customer.phone;
+                        document.getElementById('customerModal').classList.add('show');
+                    }
+                }
+
+                if (e.target.classList.contains('delete-btn')) {
+                    const customerId = e.target.dataset.id;
+                    if (confirm('Tem certeza que deseja excluir este cliente?')) {
+                        appData.customers = appData.customers.filter(c => c.id !== parseInt(customerId));
+                        loadCustomers();
+                    }
+                }
             });
 
             // Salvar perfil
             document.getElementById('profileForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                
-                // Atualizar dados do usuário
                 appData.user.name = document.getElementById('profileName').value;
                 appData.user.email = document.getElementById('profileEmail').value;
                 appData.user.avatar = document.getElementById('profileAvatar').value;
                 appData.user.bio = document.getElementById('profileBio').value;
-                
-                // Atualizar UI
-                document.getElementById('userName').textContent = appData.user.name;
-                document.getElementById('userAvatar').src = appData.user.avatar;
-                
+
+                loadUserData();
                 alert('Perfil atualizado com sucesso!');
+            });
+
+            // Salvar configurações
+            document.getElementById('settingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                appData.user.language = document.getElementById('settingsLanguage').value;
+                appData.user.currency = document.getElementById('settingsCurrency').value;
+                appData.user.emailNotifications = document.getElementById('settingsEmailNotifications').checked;
+                appData.user.pushNotifications = document.getElementById('settingsPushNotifications').checked;
+
+                alert('Configurações salvas com sucesso!');
+            });
+
+            // Gerar relatório (botão dashboard)
+            document.getElementById('generateReportBtn').addEventListener('click', function() {
+                showPage('reports');
+            });
+
+            // Gerar relatório (página reports)
+            document.getElementById('generateReportPageBtn').addEventListener('click', function() {
+                const type = document.getElementById('reportType').value;
+                const start = document.getElementById('startDate').value;
+                const end = document.getElementById('endDate').value;
+
+                generateReport(type, start, end);
             });
 
             // Logout
@@ -1212,6 +1638,38 @@
                     // Redirecionar para página de login em implementação real
                 }
             });
+
+            // Pesquisa
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                filterTables(searchTerm);
+            });
+        }
+
+        // Função para manipular ações nas tabelas
+        function handleTableActions(e) {
+            if (e.target.classList.contains('edit-btn')) {
+                const orderId = e.target.dataset.id;
+                const order = appData.orders.find(o => o.id === orderId);
+                if (order) {
+                    document.getElementById('orderModalTitle').textContent = 'Editar Pedido';
+                    document.getElementById('editOrderId').value = order.id;
+                    document.getElementById('orderCustomer').value = order.customerId;
+                    document.getElementById('orderProduct').value = order.productId;
+                    document.getElementById('orderDate').value = order.date;
+                    document.getElementById('orderValue').value = order.value;
+                    document.getElementById('orderStatus').value = order.status;
+                    document.getElementById('orderModal').classList.add('show');
+                }
+            }
+
+            if (e.target.classList.contains('delete-btn')) {
+                const orderId = e.target.dataset.id;
+                if (confirm('Tem certeza que deseja excluir este pedido?')) {
+                    appData.orders = appData.orders.filter(o => o.id !== orderId);
+                    loadOrders();
+                }
+            }
         }
 
         // Mostrar página específica
@@ -1238,6 +1696,188 @@
             if (window.innerWidth < 992) {
                 document.querySelector('.sidebar').classList.remove('active');
             }
+        }
+
+        // Gerar relatório
+        function generateReport(type, startDate, endDate) {
+            let reportHTML = '';
+            
+            switch(type) {
+                case 'sales':
+                    const sales = appData.orders.filter(order => {
+                        const orderDate = new Date(order.date);
+                        const start = startDate ? new Date(startDate) : new Date(0);
+                        const end = endDate ? new Date(endDate) : new Date();
+                        return orderDate >= start && orderDate <= end;
+                    });
+                    
+                    const totalSales = sales.reduce((sum, order) => sum + order.value, 0);
+                    const completedSales = sales.filter(order => order.status === 'completed').reduce((sum, order) => sum + order.value, 0);
+                    
+                    reportHTML = `
+                        <h3>Relatório de Vendas</h3>
+                        <p>Período: ${startDate || 'Início'} até ${endDate || 'Hoje'}</p>
+                        <div class="dashboard">
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-primary">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>R$ ${totalSales.toFixed(2).replace('.', ',')}</h3>
+                                    <p>Total de Vendas</p>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>R$ ${completedSales.toFixed(2).replace('.', ',')}</h3>
+                                    <p>Vendas Concluídas</p>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-warning">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>${sales.length}</h3>
+                                    <p>Total de Pedidos</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'financial':
+                    // Relatório financeiro simplificado
+                    reportHTML = `
+                        <h3>Relatório Financeiro</h3>
+                        <p>Em desenvolvimento - esta funcionalidade estará disponível em breve.</p>
+                    `;
+                    break;
+                    
+                case 'customers':
+                    reportHTML = `
+                        <h3>Relatório de Clientes</h3>
+                        <p>Total de clientes: ${appData.customers.length}</p>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Pedidos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${appData.customers.map(customer => `
+                                        <tr>
+                                            <td>${customer.id}</td>
+                                            <td>${customer.name}</td>
+                                            <td>${customer.email}</td>
+                                            <td>${customer.orders}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'products':
+                    // Relatório de produtos
+                    const productSales = {};
+                    appData.orders.forEach(order => {
+                        if (!productSales[order.productId]) {
+                            productSales[order.productId] = 0;
+                        }
+                        productSales[order.productId] += order.value;
+                    });
+                    
+                    reportHTML = `
+                        <h3>Relatório de Produtos</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Categoria</th>
+                                        <th>Preço</th>
+                                        <th>Vendas Totais</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${appData.products.map(product => `
+                                        <tr>
+                                            <td>${product.name}</td>
+                                            <td>${product.category}</td>
+                                            <td>R$ ${product.price.toFixed(2)}</td>
+                                            <td>R$ ${(productSales[product.id] || 0).toFixed(2)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    break;
+                    
+                default:
+                    reportHTML = `<p>Selecione um tipo de relatório válido.</p>`;
+            }
+            
+            document.getElementById('reportContent').innerHTML = reportHTML;
+        }
+
+        // Filtrar tabelas com base na pesquisa
+        function filterTables(searchTerm) {
+            if (!searchTerm) {
+                loadOrders();
+                return;
+            }
+            
+            // Filtrar pedidos
+            const filteredOrders = appData.orders.filter(order => {
+                const customer = appData.customers.find(c => c.id === order.customerId);
+                return (
+                    order.id.toLowerCase().includes(searchTerm) ||
+                    (customer && customer.name.toLowerCase().includes(searchTerm)) ||
+                    order.date.includes(searchTerm) ||
+                    order.value.toString().includes(searchTerm) ||
+                    getStatusText(order.status).toLowerCase().includes(searchTerm)
+                );
+            });
+            
+            // Atualizar tabela de pedidos na dashboard
+            const tbody = document.querySelector('#ordersTable tbody');
+            tbody.innerHTML = '';
+            
+            filteredOrders.slice(0, 5).forEach(order => {
+                const customer = appData.customers.find(c => c.id === order.customerId);
+                const product = appData.products.find(p => p.id === order.productId);
+                
+                // Formatar data
+                const dateObj = new Date(order.date);
+                const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
+                
+                // Formatar valor
+                const formattedValue = `R$ ${order.value.toFixed(2).replace('.', ',')}`;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${customer ? customer.name : 'Cliente não encontrado'}</td>
+                    <td>${formattedDate}</td>
+                    <td>${formattedValue}</td>
+                    <td><span class="status ${order.status}">${getStatusText(order.status)}</span></td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" data-id="${order.id}">Editar</button>
+                        <button class="action-btn delete-btn" data-id="${order.id}">Excluir</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
     </script>
 </body>
