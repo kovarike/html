@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Empresarial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --danger: #f94144;
+            --gray: #6c757d;
+            --sidebar-width: 250px;
+            --header-height: 70px;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 20px 0;
+            transition: var(--transition);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            padding: 0 15px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+        }
+
+        /* Header */
+        header {
+            height: var(--header-height);
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f5f7fb;
+            border-radius: 20px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            padding: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-bell i {
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover {
+            background-color: #f5f7fb;
+        }
+
+        .user-dropdown i {
+            margin-right: 10px;
+            color: var(--gray);
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 20px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+        }
+
+        .breadcrumb li {
+            margin-right: 10px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb li:after {
+            content: '/';
+            margin-left: 10px;
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .bg-primary { background-color: rgba(67, 97, 238, 0.2); color: var(--primary); }
+        .bg-success { background-color: rgba(76, 201, 240, 0.2); color: var(--success); }
+        .bg-warning { background-color: rgba(249, 199, 79, 0.2); color: var(--warning); }
+        .bg-danger { background-color: rgba(249, 65, 68, 0.2); color: var(--danger); }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        .chart-title {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-title h3 {
+            font-size: 1.2rem;
+        }
+
+        /* Tabela */
+        .recent-orders {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background-color: #f9fafc;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status.completed {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+
+        .status.pending {
+            background-color: rgba(249, 199, 79, 0.2);
+            color: var(--warning);
+        }
+
+        .status.canceled {
+            background-color: rgba(249, 65, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .edit-btn {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .edit-btn:hover {
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .delete-btn {
+            background-color: rgba(249, 65, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .delete-btn:hover {
+            background-color: rgba(249, 65, 68, 0.2);
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: var(--secondary);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        /* Relatórios */
+        .report-filters {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        /* Páginas */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background-color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f5f7fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .charts {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                width: 200px;
+            }
+
+            .header-right {
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box {
+                display: none;
+            }
+
+            .user-profile span {
+                display: none;
+            }
+
+            .report-filters {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234361ee'/><text x='50' y='60' font-size='50' text-anchor='middle' fill='white'>D</text></svg>" alt="Logo">
+            <h2>DashBoard</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#" data-page="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            <li><a href="#" data-page="orders"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+            <li><a href="#" data-page="customers"><i class="fas fa-users"></i> Customers</a></li>
+            <li><a href="#" data-page="products"><i class="fas fa-box"></i> Products</a></li>
+            <li><a href="#" data-page="reports"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Pesquisar..." id="searchInput">
+            </div>
+            <div class="header-right">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-profile" id="userProfile">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='40' r='30' fill='%236c757d'/><circle cx='50' cy='100' r='40' fill='%236c757d'/></svg>" alt="User" id="userAvatar">
+                    <span id="userName">João Silva</span>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" data-page="profile"><i class="fas fa-user"></i> Meu Perfil</a>
+                        <a href="#" data-page="settings"><i class="fas fa-cog"></i> Configurações</a>
+                        <a href="#"><i class="fas fa-question-circle"></i> Ajuda</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Dashboard Page -->
+            <div class="page active" id="dashboard-page">
+                <div class="page-title">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <ul class="breadcrumb">
+                            <li>Home</li>
+                            <li>Dashboard</li>
+                        </ul>
+                    </div>
+                    <button class="btn" id="generateReportBtn">Gerar Relatório</button>
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="dashboard">
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-primary">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">R$ 24.580,00</h3>
+                            <p>Receita Total</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">1.248</h3>
+                            <p>Pedidos Totais</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-warning">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCustomers">2.458</h3>
+                            <p>Clientes</p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-danger">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="growthRate">+35%</h3>
+                            <p>Crescimento</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts">
+                    <div class="chart-container">
+                        <div class="chart-title">
+                            <h3>Vendas Mensais</h3>
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">
+                            <h3>Distribuição de Vendas</h3>
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="recent-orders">
+                    <div class="chart-title">
+                        <h3>Pedidos Recentes</h3>
+                        <button class="btn-outline" id="addOrderBtn">Adicionar Pedido</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outras páginas (inicialmente ocultas) -->
+            <div class="page" id="analytics-page">
+                <div class="page-title">
+                    <h1>Analytics</h1>
+                </div>
+                <div class="card">
+                    <h2>Página de Analytics</h2>
+                    <p>Esta página contém análises detalhadas e métricas avançadas.</p>
+                </div>
+            </div>
+
+            <div class="page" id="orders-page">
+                <div class="page-title">
+                    <h1>Orders</h1>
+                </div>
+                <div class="card">
+                    <h2>Gerenciamento de Pedidos</h2>
+                    <p>Esta página permite gerenciar todos os pedidos do sistema.</p>
+                </div>
+            </div>
+
+            <div class="page" id="reports-page">
+                <div class="page-title">
+                    <h1>Relatórios</h1>
+                </div>
+                <div class="report-filters">
+                    <div class="form-group">
+                        <label for="reportType">Tipo de Relatório</label>
+                        <select class="form-control" id="reportType">
+                            <option value="sales">Relatório de Vendas</option>
+                            <option value="financial">Relatório Financeiro</option>
+                            <option value="customers">Relatório de Clientes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Data Inicial</label>
+                        <input type="date" class="form-control" id="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Data Final</label>
+                        <input type="date" class="form-control" id="endDate">
+                    </div>
+                    <div class="form-group">
+                        <label style="opacity: 0;">Gerar</label>
+                        <button class="btn" id="generateReportPageBtn">Gerar Relatório</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>Relatórios Personalizados</h2>
+                    <p>Gere relatórios detalhados com base nos filtros selecionados.</p>
+                </div>
+            </div>
+
+            <div class="page" id="profile-page">
+                <div class="page-title">
+                    <h1>Meu Perfil</h1>
+                </div>
+                <div class="card">
+                    <h2>Informações Pessoais</h2>
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="profileName">Nome</label>
+                            <input type="text" class="form-control" id="profileName" placeholder="Seu nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileEmail">Email</label>
+                            <input type="email" class="form-control" id="profileEmail" placeholder="Seu email">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileAvatar">URL do Avatar</label>
+                            <input type="text" class="form-control" id="profileAvatar" placeholder="URL da imagem">
+                        </div>
+                        <div class="form-group">
+                            <label for="profileBio">Bio</label>
+                            <textarea class="form-control" id="profileBio" rows="3" placeholder="Sobre você"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p>&copy; 2023 Dashboard Empresarial. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal para adicionar pedido -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Novo Pedido</h3>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="orderCustomer">Cliente</label>
+                        <input type="text" class="form-control" id="orderCustomer" placeholder="Nome do cliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderDate">Data</label>
+                        <input type="date" class="form-control" id="orderDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderValue">Valor (R$)</label>
+                        <input type="number" class="form-control" id="orderValue" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderStatus">Status</label>
+                        <select class="form-control" id="orderStatus" required>
+                            <option value="completed">Concluído</option>
+                            <option value="pending">Pendente</option>
+                            <option value="canceled">Cancelado</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" data-dismiss="modal">Cancelar</button>
+                <button class="btn" id="saveOrderBtn">Salvar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados iniciais da aplicação
+        const appData = {
+            user: {
+                name: "João Silva",
+                email: "joao.silva@email.com",
+                avatar: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='40' r='30' fill='%236c757d'/><circle cx='50' cy='100' r='40' fill='%236c757d'/></svg>",
+                bio: "Gerente de Vendas"
+            },
+            orders: [
+                { id: "ORD-001", customer: "Maria Santos", date: "2023-07-12", value: 350.00, status: "completed" },
+                { id: "ORD-002", customer: "João Silva", date: "2023-07-11", value: 1250.00, status: "pending" },
+                { id: "ORD-003", customer: "Ana Costa", date: "2023-07-10", value: 499.90, status: "completed" },
+                { id: "ORD-004", customer: "Pedro Alves", date: "2023-07-09", value: 2399.00, status: "canceled" },
+                { id: "ORD-005", customer: "Carla Mendes", date: "2023-07-08", value: 189.90, status: "completed" }
+            ],
+            monthlySales: [15000, 18000, 21000, 19000, 23000, 25000, 27000, 29000, 26000, 24000, 22000, 24580],
+            salesDistribution: [35, 25, 20, 20],
+            salesCategories: ['Eletrônicos', 'Roupas', 'Casa', 'Esportes']
+        };
+
+        // Inicialização da aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar dados do usuário
+            loadUserData();
+            
+            // Carregar pedidos
+            loadOrders();
+            
+            // Inicializar gráficos
+            initCharts();
+            
+            // Configurar event listeners
+            setupEventListeners();
+        });
+
+        // Carregar dados do usuário
+        function loadUserData() {
+            document.getElementById('userName').textContent = appData.user.name;
+            document.getElementById('userAvatar').src = appData.user.avatar;
+            document.getElementById('profileName').value = appData.user.name;
+            document.getElementById('profileEmail').value = appData.user.email;
+            document.getElementById('profileAvatar').value = appData.user.avatar;
+            document.getElementById('profileBio').value = appData.user.bio;
+        }
+
+        // Carregar pedidos na tabela
+        function loadOrders() {
+            const tbody = document.querySelector('#ordersTable tbody');
+            tbody.innerHTML = '';
+            
+            appData.orders.forEach(order => {
+                const tr = document.createElement('tr');
+                
+                // Formatar data
+                const dateObj = new Date(order.date);
+                const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
+                
+                // Formatar valor
+                const formattedValue = `R$ ${order.value.toFixed(2).replace('.', ',')}`;
+                
+                tr.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td>${formattedDate}</td>
+                    <td>${formattedValue}</td>
+                    <td><span class="status ${order.status}">${getStatusText(order.status)}</span></td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit-btn" data-id="${order.id}">Editar</button>
+                        <button class="action-btn delete-btn" data-id="${order.id}">Excluir</button>
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+            
+            // Atualizar estatísticas
+            updateStats();
+        }
+
+        // Obter texto do status
+        function getStatusText(status) {
+            const statusMap = {
+                'completed': 'Concluído',
+                'pending': 'Pendente',
+                'canceled': 'Cancelado'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            // Calcular totais
+            const totalRevenue = appData.orders.reduce((sum, order) => {
+                return order.status !== 'canceled' ? sum + order.value : sum;
+            }, 0);
+            
+            const totalOrders = appData.orders.length;
+            
+            // Atualizar UI
+            document.getElementById('totalRevenue').textContent = `R$ ${totalRevenue.toFixed(2).replace('.', ',')}`;
+            document.getElementById('totalOrders').textContent = totalOrders;
+        }
+
+        // Inicializar gráficos
+        function initCharts() {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [{
+                        label: 'Vendas em R$',
+                        data: appData.monthlySales,
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        borderColor: '#4361ee',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Doughnut Chart
+            const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+            const doughnutChart = new Chart(doughnutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: appData.salesCategories,
+                    datasets: [{
+                        data: appData.salesDistribution,
+                        backgroundColor: [
+                            '#4361ee',
+                            '#4cc9f0',
+                            '#f9c74f',
+                            '#f94144'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Menu toggle
+            document.querySelector('.menu-toggle').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+            });
+
+            // Navegação do menu
+            document.querySelectorAll('.sidebar-menu a, .user-dropdown a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    if (pageId) {
+                        showPage(pageId);
+                    }
+                });
+            });
+
+            // Dropdown do usuário
+            document.getElementById('userProfile').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('userDropdown').classList.toggle('show');
+            });
+
+            // Fechar dropdown ao clicar fora
+            document.addEventListener('click', function() {
+                document.getElementById('userDropdown').classList.remove('show');
+            });
+
+            // Botão de adicionar pedido
+            document.getElementById('addOrderBtn').addEventListener('click', function() {
+                document.getElementById('orderModal').classList.add('show');
+            });
+
+            // Fechar modal
+            document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('orderModal').classList.remove('show');
+                });
+            });
+
+            // Salvar pedido
+            document.getElementById('saveOrderBtn').addEventListener('click', function() {
+                const customer = document.getElementById('orderCustomer').value;
+                const date = document.getElementById('orderDate').value;
+                const value = parseFloat(document.getElementById('orderValue').value);
+                const status = document.getElementById('orderStatus').value;
+                
+                if (customer && date && value && status) {
+                    // Gerar ID único
+                    const newId = `ORD-${(appData.orders.length + 1).toString().padStart(3, '0')}`;
+                    
+                    // Adicionar pedido
+                    appData.orders.unshift({
+                        id: newId,
+                        customer: customer,
+                        date: date,
+                        value: value,
+                        status: status
+                    });
+                    
+                    // Recarregar tabela
+                    loadOrders();
+                    
+                    // Fechar modal
+                    document.getElementById('orderModal').classList.remove('show');
+                    
+                    // Limpar formulário
+                    document.getElementById('orderForm').reset();
+                } else {
+                    alert('Por favor, preencha todos os campos.');
+                }
+            });
+
+            // Gerar relatório
+            document.getElementById('generateReportBtn').addEventListener('click', function() {
+                alert('Relatório gerado com sucesso! Em uma implementação real, isso baixaria um PDF.');
+            });
+
+            document.getElementById('generateReportPageBtn').addEventListener('click', function() {
+                const reportType = document.getElementById('reportType').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                
+                alert(`Relatório do tipo "${reportType}" gerado para o período ${startDate} à ${endDate}`);
+            });
+
+            // Salvar perfil
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Atualizar dados do usuário
+                appData.user.name = document.getElementById('profileName').value;
+                appData.user.email = document.getElementById('profileEmail').value;
+                appData.user.avatar = document.getElementById('profileAvatar').value;
+                appData.user.bio = document.getElementById('profileBio').value;
+                
+                // Atualizar UI
+                document.getElementById('userName').textContent = appData.user.name;
+                document.getElementById('userAvatar').src = appData.user.avatar;
+                
+                alert('Perfil atualizado com sucesso!');
+            });
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Tem certeza que deseja sair?')) {
+                    alert('Logout realizado com sucesso!');
+                    // Redirecionar para página de login em implementação real
+                }
+            });
+        }
+
+        // Mostrar página específica
+        function showPage(pageId) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostrar página selecionada
+            document.getElementById(`${pageId}-page`).classList.add('active');
+            
+            // Atualizar menu ativo
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const activeLink = document.querySelector(`.sidebar-menu a[data-page="${pageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Fechar sidebar em mobile
+            if (window.innerWidth < 992) {
+                document.querySelector('.sidebar').classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
